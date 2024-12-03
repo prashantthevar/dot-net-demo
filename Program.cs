@@ -1,19 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using MySql.EntityFrameworkCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Retrieve the MySQL connection string from the environment variable
 var connectionString = builder.Configuration.GetValue<string>("DATABASE_URL");
 
-if (string.IsNullOrEmpty(connectionString))
-{
-    throw new InvalidOperationException("Connection string 'DATABASE_URL' is not set.");
-}
-
-// Use the MySQL provider for Entity Framework Core
+// Register DbContext with dependency injection container
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
