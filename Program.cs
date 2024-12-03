@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetValue<string>("DATABASE_URL");
+var connectionString = builder.Configuration.GetValue<string>("Server=autorack.proxy.rlwy.net;Port=49127;Database=railway;User=root;Password=MYKbAUaIbRlyurGUSXhyQqsDyuoviKVz;");
 
 // Register DbContext with dependency injection container
 builder.Services.AddDbContext<AppDbContext>(options =>
