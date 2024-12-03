@@ -1,19 +1,22 @@
-# Use .NET SDK image for building
+# Use the official image as a parent image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+# Use the SDK image to build the app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["MinimalApiDemo/MinimalApiDemo.csproj", "MinimalApiDemo/"]
+RUN dotnet restore "MinimalApiDemo/MinimalApiDemo.csproj"
+COPY . .
+WORKDIR "/src/MinimalApiDemo"
+RUN dotnet build "MinimalApiDemo.csproj" -c Release -o /app/build
 
-# Set working directory
+FROM build AS publish
+RUN dotnet publish "MinimalApiDemo.csproj" -c Release -o /app/publish
+
+# Copy the build files to the final image
+FROM base AS final
 WORKDIR /app
-
-# Copy the project file and restore dependencies
-COPY *.csproj ./
-RUN dotnet restore
-
-# Copy the rest of the application and publish it
-COPY . ./
-RUN dotnet publish -c Release -o /app/out
-
-# Use .NET runtime image for running the app
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
-WORKDIR /app
-COPY --from=build /app/out .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MinimalApiDemo.dll"]
