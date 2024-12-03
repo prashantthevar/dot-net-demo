@@ -10,10 +10,9 @@ if (string.IsNullOrEmpty(connectionString))
     throw new InvalidOperationException("Connection string 'DATABASE_URL' is not set.");
 }
 
-
-// Register DbContext with dependency injection container
+// Use the MySQL provider for Entity Framework Core
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 var app = builder.Build();
 
