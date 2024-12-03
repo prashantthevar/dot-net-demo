@@ -6,10 +6,18 @@ EXPOSE 80
 # Use the SDK image to build the app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["MinimalApiDemo.csproj", "MinimalApiDemo/"]
+
+# Copy the project file into the container
+COPY ["MinimalApiDemo.csproj", "./"]
+
+# Restore the dependencies
 RUN dotnet restore "MinimalApiDemo.csproj"
+
+# Copy the rest of the source code
 COPY . .
-WORKDIR "/src/MinimalApiDemo"
+
+# Build the project
+WORKDIR "/src"
 RUN dotnet build "MinimalApiDemo.csproj" -c Release -o /app/build
 
 FROM build AS publish
