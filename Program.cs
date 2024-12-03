@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Get the connection string from environment variables (set in Railway)
-var connectionString = builder.Configuration.GetValue<string>("DATABASE_URL");
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
 
 // Register DbContext with MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>
