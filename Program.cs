@@ -2,13 +2,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Retrieve connection string from the environment variable
-var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+var connectionString = builder.Configuration.GetValue<string>("DATABASE_URL");
 
-if (string.IsNullOrEmpty(connectionString))
-{
-    throw new InvalidOperationException("Environment variable 'DATABASE_URL' is not set.");
-}
+// Register DbContext with dependency injection container
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
@@ -16,7 +14,6 @@ var app = builder.Build();
 // Use the environment variable PORT if available, otherwise fallback to 5000
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 app.MapGet("/", () => "Hello, World!");
-app.MapGet("/test", () => "Hello, test World!");
 
 // Example minimal API endpoints interacting with the database
 app.MapGet("/todos", async (AppDbContext db) =>
