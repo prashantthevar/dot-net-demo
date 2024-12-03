@@ -1,4 +1,4 @@
-# Use the .NET 6 runtime for the base image
+# Use the .NET 6 runtime as the base image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
@@ -13,4 +13,5 @@ RUN dotnet publish -c Release -o /app
 # Use the runtime image for the final image
 FROM base AS final
 WORKDIR /app
-COPY --from
+COPY --from=build /app .
+ENTRYPOINT ["dotnet", "MinimalApiDemo.dll"]
