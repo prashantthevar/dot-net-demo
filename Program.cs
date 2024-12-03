@@ -14,6 +14,7 @@ var app = builder.Build();
 // Use the environment variable PORT if available, otherwise fallback to 5000
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 app.MapGet("/", () => "Hello, World!");
+app.MapGet("/test", () => "Hello, test World!");
 
 // Example minimal API endpoints interacting with the database
 app.MapGet("/todos", async (AppDbContext db) =>
