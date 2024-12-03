@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("mysql://root:ZTdgOPQkfNeMVfDoMvNWerPEHzfCHRQF@junction.proxy.rlwy.net:21246/railway");
+var connectionString = builder.Configuration.GetConnectionString("mysql://root:MYKbAUaIbRlyurGUSXhyQqsDyuoviKVz@autorack.proxy.rlwy.net:49127/railway");
 
 // Register DbContext with dependency injection container
 builder.Services.AddDbContext<AppDbContext>(options =>
