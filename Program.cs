@@ -2,12 +2,13 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Get the connection string from environment variables (set in Railway)
+// Retrieve connection string from the environment variable
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
 
-// Register DbContext with MySQL
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))); // Using MySQL
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Environment variable 'DATABASE_URL' is not set.");
+}
 
 var app = builder.Build();
 
