@@ -2,20 +2,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Retrieve the DATABASE_URL from the environment variables
-var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+var connectionString = builder.Configuration.GetValue<string>("DATABASE_URL");
 
-if (string.IsNullOrEmpty(databaseUrl))
-{
-    throw new InvalidOperationException("Environment variable 'DATABASE_URL' is not set.");
-}
-
-// Convert DATABASE_URL to a MySQL-compatible connection string
-var connectionString = ConvertDatabaseUrlToConnectionString(databaseUrl);
-
-// Configure DbContext with the parsed connection string
+// Register DbContext with dependency injection container
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
@@ -38,12 +29,3 @@ app.MapPost("/todos", async (AppDbContext db, Todo todo) =>
 });
 
 app.Run($"http://0.0.0.0:{port}");
-
-
-// Helper function to parse DATABASE_URL
-string ConvertDatabaseUrlToConnectionString(string databaseUrl)
-{
-    var uri = new Uri(databaseUrl);
-    var userInfo = uri.UserInfo.Split(':');
-    return $"Server={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};User={userInfo[0]};Password={userInfo[1]};";
-}
