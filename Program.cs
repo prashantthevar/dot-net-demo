@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // var connectionString = builder.Configuration.GetValue<string>("RAILWAY_DATABASE_URL");
-var connectionString = "Server=autorack.proxy.rlwy.net;Port=49127;Database=railway;Uid=root;Pwd=MYKbAUaIbRlyurGUSXhyQqsDyuoviKVz;";
+var connectionString = "mysql://root:MYKbAUaIbRlyurGUSXhyQqsDyuoviKVz@autorack.proxy.rlwy.net:49127/railway";
 
 
 // Register DbContext with dependency injection container
