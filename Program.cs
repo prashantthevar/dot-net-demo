@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetValue<string>("DefaultConnection");
+var connectionString = builder.Configuration.GetValue<string>("RAILWAY_DATABASE_URL");
 
 // Register DbContext with dependency injection container
 builder.Services.AddDbContext<AppDbContext>(options =>
