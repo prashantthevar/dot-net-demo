@@ -10,10 +10,10 @@ if (string.IsNullOrEmpty(databaseUrl))
     throw new InvalidOperationException("Environment variable 'DATABASE_URL' is not set.");
 }
 
-// Parse DATABASE_URL into a MySQL connection string
+// Convert DATABASE_URL to a MySQL-compatible connection string
 var connectionString = ConvertDatabaseUrlToConnectionString(databaseUrl);
 
-// Add DbContext with the parsed connection string
+// Configure DbContext with the parsed connection string
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
@@ -40,7 +40,7 @@ app.MapPost("/todos", async (AppDbContext db, Todo todo) =>
 app.Run($"http://0.0.0.0:{port}");
 
 
-// Helper function to convert DATABASE_URL to MySQL connection string
+// Helper function to parse DATABASE_URL
 string ConvertDatabaseUrlToConnectionString(string databaseUrl)
 {
     var uri = new Uri(databaseUrl);
