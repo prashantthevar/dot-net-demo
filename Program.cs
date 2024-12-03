@@ -2,9 +2,12 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// Get the connection string from environment variables (set in Railway)
+var connectionString = builder.Configuration.GetValue<string>("DATABASE_URL");
+
+// Register DbContext with MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))); // Using MySQL
 
 var app = builder.Build();
 
