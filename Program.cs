@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = ConnectionHelper.GetConnectionString(builder.Configuration);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Register DbContext with dependency injection container
 builder.Services.AddDbContext<AppDbContext>(options =>
